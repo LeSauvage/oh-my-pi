@@ -1,0 +1,5 @@
+modelRoles:
+  hub_deep: anthropic/claude-opus-5-5:high
+  hub_build: anthropic/claude-sonnet-5:high
+  hub_review: anthropic/claude-opus-5-5:high
+  hub_fast: anthropic/claude-haiku-4-5
