@@ -16,6 +16,40 @@ The installer adds this repository as the `.omp` submodule. Pass a path to insta
 curl -fsSL https://raw.githubusercontent.com/LeSauvage/oh-my-pi/master/install.sh | bash -s -- .oh-my-pi
 ```
 
+## Use without committing
+
+The submodule installer records its installation in the target repository. To use these hooks locally without staged or committed project changes, clone the configuration once and symlink it into each target repository:
+
+```sh
+git clone https://github.com/LeSauvage/oh-my-pi.git ~/.local/share/oh-my-pi
+
+cd /path/to/another-repo
+ln -s ~/.local/share/oh-my-pi .omp
+printf '/.omp\n' >> .git/info/exclude
+```
+
+OMP discovers the hooks through the local `.omp` symlink. `.git/info/exclude` is local Git metadata, so the link is never committed. Update the shared checkout with:
+
+```sh
+git -C ~/.local/share/oh-my-pi pull --ff-only
+```
+
+For every OMP project, install it at the user-level discovery path instead:
+
+```sh
+git clone https://github.com/LeSauvage/oh-my-pi.git ~/.omp/agent
+```
+
+For a single OMP invocation without any target-repository filesystem changes:
+
+```sh
+omp \
+  --hook ~/.local/share/oh-my-pi/hooks/pre/force-push.ts \
+  --hook ~/.local/share/oh-my-pi/hooks/pre/env-file-mask.ts
+```
+
+If a target repository already has a tracked `.omp/`, do not replace it with the symlink; use the user-level or one-off option.
+
 ## Contents
 
 | Path | Purpose |
